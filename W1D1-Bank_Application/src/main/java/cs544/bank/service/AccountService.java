@@ -2,14 +2,10 @@ package cs544.bank.service;
 
 import java.util.Collection;
 
-import cs544.bank.dao.AccountDAO;
 import cs544.bank.dao.IAccountDAO;
 import cs544.bank.domain.Account;
 import cs544.bank.domain.Customer;
 import cs544.bank.jms.IJMSSender;
-import cs544.bank.jms.JMSSender;
-import cs544.bank.logging.ILogger;
-import cs544.bank.logging.Logger;
 import org.springframework.stereotype.Service;
 
 @Service

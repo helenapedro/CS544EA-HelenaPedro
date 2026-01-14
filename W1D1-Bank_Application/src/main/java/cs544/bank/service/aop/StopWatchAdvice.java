@@ -10,7 +10,7 @@ import org.springframework.util.StopWatch;
 @Component
 public class StopWatchAdvice {
 
-    @Around("execution(* cs544.bank.service..*(..))")
+    @Around("execution(* cs544.bank.service.AccountService.*(..))")
     public Object timeServiceMethods(ProceedingJoinPoint pjp) throws Throwable {
 
         StopWatch sw = new StopWatch();

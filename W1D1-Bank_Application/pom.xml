@@ -17,7 +17,7 @@
 	<description>MIU CS544 AOP Lab Project 2</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
