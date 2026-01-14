@@ -24,7 +24,7 @@ public class PerformanceAspect {
                 "Time to execute " +
                         pjp.getSignature().getName() +
                         " = " +
-                        sw.getLastTaskTimeMillis() +
+                        sw.getTotalTimeMillis() +
                         " ms"
         );
 

@@ -24,8 +24,7 @@ Logs the email address and message passed to `sendEmail()`.
 **Console Output:**
 CustomerDAO: saving customer Frank Brown
 EmailSender: sending 'Welcome Frank Brown as a new customer' to fbrown@acme.com
-Wed Jan 14 11:42:06 CST 2026 method= sendEmail address=fbrown@acme.com 
-message= Welcome Frank Brown as a new customer
+Wed Jan 14 11:42:06 CST 2026 method= sendEmail address=fbrown@acme.com message= Welcome Frank Brown as a new customer
 ---
 
 ## Part (c) – After Advice with Target Object Data
@@ -36,9 +35,7 @@ Logs the outgoing mail server using the target object via `JoinPoint`.
 **Console Output:**
 CustomerDAO: saving customer Frank Brown
 EmailSender: sending 'Welcome Frank Brown as a new customer' to fbrown@acme.com
-Wed Jan 14 11:43:16 CST 2026 method= sendEmail address=fbrown@acme.com 
-message= Welcome Frank Brown as a new customer outgoing mail 
-server = smtp.acme.com
+Wed Jan 14 11:43:16 CST 2026 method= sendEmail address=fbrown@acme.com message= Welcome Frank Brown as a new customer outgoing mail server = smtp.acme.com
 ---
 
 ## Part (d) – Around Advice: Performance Monitoring
