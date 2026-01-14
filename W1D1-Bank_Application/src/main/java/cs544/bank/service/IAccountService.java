@@ -3,9 +3,10 @@ package cs544.bank.service;
 import java.util.Collection;
 
 import cs544.bank.domain.Account;
+import org.springframework.stereotype.Service;
 
 
-
+@Service
 public interface IAccountService {
     public Account createAccount(long accountNumber, String customerName);
     public Account getAccount(long accountNumber);
