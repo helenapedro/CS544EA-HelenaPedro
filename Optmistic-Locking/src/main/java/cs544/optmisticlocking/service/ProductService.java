@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductService {
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Transactional
     public Long createProduct(String name, double price) {
         Product product = new Product(null, name, price, null);
         return productRepository.save(product).getId();
@@ -23,7 +23,6 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    @Transactional
     public void updateProductPrice(Long productId, double newPrice) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
@@ -33,6 +32,5 @@ public class ProductService {
         } catch (InterruptedException ignored) {}
 
         product.setPrice(newPrice);
-        productRepository.saveAndFlush(product);
     }
 }

@@ -1,6 +1,5 @@
 package cs544.optmisticlocking;
 
-import cs544.optmisticlocking.repository.ProductRepository;
 import cs544.optmisticlocking.service.ProductService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
