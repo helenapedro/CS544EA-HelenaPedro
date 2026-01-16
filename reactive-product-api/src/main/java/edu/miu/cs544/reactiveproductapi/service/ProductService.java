@@ -2,17 +2,15 @@ package edu.miu.cs544.reactiveproductapi.service;
 
 import edu.miu.cs544.reactiveproductapi.model.Product;
 import edu.miu.cs544.reactiveproductapi.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 public class ProductService {
-    private final ProductRepository productRepository;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
     public Flux<Product> findAllProducts() {
         return productRepository.findAll();
@@ -23,7 +21,6 @@ public class ProductService {
     }
 
     public Mono<Product> saveProduct(Product product) {
-        product.setId(null);
         return productRepository.save(product);
     }
 
