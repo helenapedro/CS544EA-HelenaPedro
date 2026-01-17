@@ -75,7 +75,7 @@ public class BlogService {
                             .map(Optional::of);
                 });
     }
-    
+
     public Mono<Boolean> delete(String id) {
         return Mono.fromCallable(() -> {
                     if (!blogRepository.existsById(id)) return false;
