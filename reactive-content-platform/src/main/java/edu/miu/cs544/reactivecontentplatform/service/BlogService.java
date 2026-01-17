@@ -25,8 +25,7 @@ public class BlogService {
     public Mono<List<Blog>> findAll() {
         return Mono.fromCallable(blogRepository::findAll)
                 .subscribeOn(Schedulers.boundedElastic())
-                // enrich each blog with category
-                .flatMapMany(list -> reactor.core.publisher.Flux.fromIterable(list))
+                .flatMapMany(reactor.core.publisher.Flux::fromIterable)
                 .flatMap(this::enrichWithCategory)
                 .collectList();
     }
@@ -35,13 +34,15 @@ public class BlogService {
         return Mono.fromCallable(() -> blogRepository.findById(id))
                 .subscribeOn(Schedulers.boundedElastic())
                 .flatMap(optBlog ->
-                        optBlog.map(this::enrichWithCategory).orElseGet(() -> Mono.just(Optional.empty()))
+                        optBlog.map(blog ->
+                                        enrichWithCategory(blog).map(Optional::of)
+                                )
+                                .orElseGet(() -> Mono.just(Optional.empty()))
                 );
     }
 
     public Mono<Blog> create(Blog blog) {
         blog.setId(null);
-        // Validate category exists (optional but nice)
         return Mono.fromCallable(() -> {
                     if (blog.getCategoryId() != null && !categoryRepository.existsById(blog.getCategoryId())) {
                         throw new IllegalArgumentException("Category not found: " + blog.getCategoryId());
@@ -49,7 +50,7 @@ public class BlogService {
                     return blogRepository.save(blog);
                 })
                 .subscribeOn(Schedulers.boundedElastic())
-                .flatMap(this::enrichWithCategoryUnsafe);
+                .flatMap(this::enrichWithCategory);
     }
 
     public Mono<Optional<Blog>> update(String id, Blog blog) {
@@ -70,10 +71,11 @@ public class BlogService {
                                 return blogRepository.save(existing);
                             })
                             .subscribeOn(Schedulers.boundedElastic())
-                            .flatMap(saved -> enrichWithCategoryUnsafe(saved).map(Optional::of));
+                            .flatMap(this::enrichWithCategory)
+                            .map(Optional::of);
                 });
     }
-
+    
     public Mono<Boolean> delete(String id) {
         return Mono.fromCallable(() -> {
                     if (!blogRepository.existsById(id)) return false;
@@ -83,22 +85,17 @@ public class BlogService {
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
-    private Mono<Blog> enrichWithCategoryUnsafe(Blog blog) {
-        return enrichWithCategory(blog).flatMap(opt -> Mono.just(opt.orElse(blog)));
-    }
-
-    private Mono<Optional<Blog>> enrichWithCategory(Blog blog) {
+    private Mono<Blog> enrichWithCategory(Blog blog) {
         if (blog.getCategoryId() == null) {
             blog.setCategory(null);
-            return Mono.just(Optional.of(blog));
+            return Mono.just(blog);
         }
 
         return Mono.fromCallable(() -> categoryRepository.findById(blog.getCategoryId()))
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(optCat -> {
-                    Category cat = optCat.orElse(null);
-                    blog.setCategory(cat);
-                    return Optional.of(blog);
+                    blog.setCategory(optCat.orElse(null));
+                    return blog;
                 });
     }
 }
